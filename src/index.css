@@ -1,13 +1,16 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.instagram-logo {
+  background-position: 0 -130px;
+  height: 51px;
+  width: 175px;
+  background-image: url(https://bit.ly/3v2LT17);
+}
+.facebook-logo {
+  background-position: -414px -259px;
+  background-image: url(https://bit.ly/3v2LT17);
+  height: 16px;
+  width: 16px;
 }
